@@ -30,17 +30,20 @@ void Steering::calculate(double velocityVector[3], Vector2 outputRate[4], double
 
 #warning use wheelRadius
     
-    bufOutputRate[0].x = v[0] - _config.wheelRadius * v[2] * sin(_config.theta + angle);
-    bufOutputRate[0].y = v[1] + _config.wheelRadius * v[2] * cos(_config.theta + angle);
+    // 機体半径とホイール半径を考慮した計算式を確認する
+    //bufOutputRate[0].x = v[0] - _config.wheelRadius * v[2] * sin(_config.theta + angle);
+    
+    bufOutputRate[0].x = v[0] - v[2] * sin(_config.theta + angle);
+    bufOutputRate[0].y = v[1] + v[2] * cos(_config.theta + angle);
         
-    bufOutputRate[1].x = v[0] - _config.wheelRadius * v[2] * cos(_config.theta + angle);
-    bufOutputRate[1].y = v[1] - _config.wheelRadius * v[2] * sin(_config.theta + angle);
+    bufOutputRate[1].x = v[0] - v[2] * cos(_config.theta + angle);
+    bufOutputRate[1].y = v[1] - v[2] * sin(_config.theta + angle);
         
-    bufOutputRate[2].x = v[0] + _config.wheelRadius * v[2] * sin(_config.theta + angle);
-    bufOutputRate[2].y = v[1] - _config.wheelRadius * v[2] * cos(_config.theta + angle);
+    bufOutputRate[2].x = v[0] + v[2] * sin(_config.theta + angle);
+    bufOutputRate[2].y = v[1] - v[2] * cos(_config.theta + angle);
         
-    bufOutputRate[3].x = v[0] + _config.wheelRadius * v[2] * cos(_config.theta + angle);
-    bufOutputRate[3].y = v[1] + _config.wheelRadius * v[2] * sin(_config.theta + angle);
+    bufOutputRate[3].x = v[0] + v[2] * cos(_config.theta + angle);
+    bufOutputRate[3].y = v[1] + v[2] * sin(_config.theta + angle);
     
     // 閾値処理
     for(int wheelNum = 0; wheelNum < 4; wheelNum++)
@@ -51,7 +54,7 @@ void Steering::calculate(double velocityVector[3], Vector2 outputRate[4], double
         if(bufOutputRate[wheelNum].getMagnitude() > _thresholdParam.maxOutput)
             isOverflowOfOutputRate = true;
         
-        MaxAbsOutputRate = bufOutputRate[wheelNum].getMagnitude();
+        MaxAbsOutputRate = (bufOutputRate[wheelNum].getMagnitude() > MaxAbsOutputRate) ? bufOutputRate[wheelNum].getMagnitude() : MaxAbsOutputRate;
     }
     
     for(int wheelNum = 0; wheelNum < 4; wheelNum++)
