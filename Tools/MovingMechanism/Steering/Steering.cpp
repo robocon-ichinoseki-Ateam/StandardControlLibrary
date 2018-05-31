@@ -3,70 +3,73 @@
 Steering::Steering(mechanismConfig_t config, thresholdParam_t thresholdParam) :
     _config(config), _thresholdParam(thresholdParam)
 {
+        double x = _config.width / 2;
+    double y = _config.length / 2;
+
+#warning [mm]? [m]?
+    // 機体中心からホイールまでの距離を出す
+    if(_config.radius == 0.0)
+    {
+        _config.radius = sqrt(x*x + y*y);
+    }
     
+    // ホイールの配置から回転の時のホイール角度を出す
+    _config.theta = atan2(y, x);
 }
 
-void Steering::calculate(double velocityVector[3], Vector2 outputRate[4], double angle)
+void Steering::calculate(double velocityVector[3], double angle)
 {
-    double v[3];
-    Vector2 bufOutputRate[4];
+    double maxValue = 0;
     
-    // 理論出力レート値が実際の範囲越えを起こしたかを格納するフラグ変数
-    bool isOverflowOfOutputRate = false;
-
-    // 最大値を格納 [0-_thresholdParam.maxOutput]
-    double MaxAbsOutputRate = 0;
-    
-    // 閾値未満切り捨て、ガード処理
+    // 入力ガード処理
     for(int element = 0; element < 3; element++)
     {
-        if(abs(velocityVector[element]) < _thresholdParam.minInput)
-            velocityVector[element] = 0;
-        if(abs(velocityVector[element]) > _thresholdParam.maxInput)
+        if(velocityVector[element] > _thresholdParam.maxInput)
             velocityVector[element] = _thresholdParam.maxInput;
-        
-        v[element] = velocityVector[element];
-    }
-
-#warning use wheelRadius
-    
-    // 機体半径とホイール半径を考慮した計算式を確認する
-    //bufOutputRate[0].x = v[0] - _config.wheelRadius * v[2] * sin(_config.theta + angle);
-    
-    bufOutputRate[0].x = v[0] - v[2] * sin(_config.theta + angle);
-    bufOutputRate[0].y = v[1] + v[2] * cos(_config.theta + angle);
-        
-    bufOutputRate[1].x = v[0] - v[2] * cos(_config.theta + angle);
-    bufOutputRate[1].y = v[1] - v[2] * sin(_config.theta + angle);
-        
-    bufOutputRate[2].x = v[0] + v[2] * sin(_config.theta + angle);
-    bufOutputRate[2].y = v[1] - v[2] * cos(_config.theta + angle);
-        
-    bufOutputRate[3].x = v[0] + v[2] * cos(_config.theta + angle);
-    bufOutputRate[3].y = v[1] + v[2] * sin(_config.theta + angle);
-    
-    // 閾値処理
-    for(int wheelNum = 0; wheelNum < 4; wheelNum++)
-    {
-        if(bufOutputRate[wheelNum].getMagnitude() < _thresholdParam.minOutput)
-            bufOutputRate[wheelNum].set(0.0f, 0.0f);
             
-        if(bufOutputRate[wheelNum].getMagnitude() > _thresholdParam.maxOutput)
-            isOverflowOfOutputRate = true;
-        
-        MaxAbsOutputRate = (bufOutputRate[wheelNum].getMagnitude() > MaxAbsOutputRate) ? bufOutputRate[wheelNum].getMagnitude() : MaxAbsOutputRate;
+        if(velocityVector[element] < _thresholdParam.minInput)
+            velocityVector[element] = 0;
     }
     
-    for(int wheelNum = 0; wheelNum < 4; wheelNum++)
+    // xy方向の入力をangle分回転
+    velocityVector[0] = velocityVector[0] * cos(-angle) - velocityVector[1] * sin(-angle);
+    velocityVector[1] = velocityVector[0] * sin(-angle) + velocityVector[1] * cos(-angle);
+    
+    // 各ホイールの速度の計算
+#warning use _config.width & _config.length. rotationCorrection
+    //v[0].x = velocityVector[0] - velocityVector[2] * sin(_config.theta + angle);
+    
+    v[0].x = velocityVector[0] - _config.radius * velocityVector[2] * sin(_config.theta);
+    v[0].y = velocityVector[1] + _config.radius * velocityVector[2] * cos(_config.theta);
+        
+    v[1].x = velocityVector[0] - _config.radius * velocityVector[2] * cos(_config.theta);
+    v[1].y = velocityVector[1] - _config.radius * velocityVector[2] * sin(_config.theta);
+        
+    v[2].x = velocityVector[0] + _config.radius * velocityVector[2] * sin(_config.theta);
+    v[2].y = velocityVector[1] - _config.radius * velocityVector[2] * cos(_config.theta);
+        
+    v[3].x = velocityVector[0] + _config.radius * velocityVector[2] * cos(_config.theta);
+    v[3].y = velocityVector[1] + _config.radius * velocityVector[2] * sin(_config.theta);
+    
+    // 最大値を格納
+    for(int wheel = 0; wheel < 4; wheel++)
     {
-#warning check points
-        if(isOverflowOfOutputRate)
-        {
-            outputRate[wheelNum] = bufOutputRate[wheelNum] * _thresholdParam.maxOutput / MaxAbsOutputRate;
-        }
-        else
-        {
-            outputRate[wheelNum] = bufOutputRate[wheelNum];
-        }    
+        if(v[wheel].getMagnitude() > maxValue)
+            maxValue = v[wheel].getMagnitude();
     }
+    
+    // 出力ガード処理
+    for(int wheel = 0; wheel < 4; wheel++)
+    {
+        if(maxValue > _thresholdParam.maxOutput)
+            v[wheel] = v[wheel] * _thresholdParam.maxOutput / maxValue;
+            
+        if(v[wheel].getMagnitude() < _thresholdParam.minOutput)
+            v[wheel].set(0,0);
+    }
+}
+
+Vector2 Steering::getWheelVelocity(short num)
+{
+    return v[num];
 }

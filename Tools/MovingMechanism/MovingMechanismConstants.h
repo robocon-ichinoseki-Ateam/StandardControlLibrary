@@ -7,18 +7,20 @@
 
 typedef struct
 {
-    double theta;
-    double radius;
-    double wheelRadius;
+    double theta;  // for omni
+    double radius; // for omni
+    double length; // for mecanum, steering
+    double width;  // for mecanum, steering
+    //double wheelRadius;
     int option;
 }mechanismConfig_t;
 
 typedef struct
 {
-    double minInput;  //入力の切り捨て閾値
-    double maxInput;  //入力の最大値
-    double minOutput; //出力の切り捨て閾値
-    double maxOutput; //出力の最大値、出力結果は[-maxOutputVelocity .. maxOutputVelocity]
+    double minInput;  //最小機体速度
+    double maxInput;  //最大機体速度
+    double minOutput; //最小ホイール速度
+    double maxOutput; //最大ホイール速度
 }thresholdParam_t;
 
 #endif //MovinMechanismConstants_h

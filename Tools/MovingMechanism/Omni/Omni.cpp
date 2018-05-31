@@ -1,7 +1,7 @@
 #include "MovingMechanism.h"
 
-Omni::Omni(mechanismConfig_t config, thresholdParam_t thresholdParam, int option) :
-    BaseMovingMechanism(config, thresholdParam, OMNI_3WHEEL)//, _option(option)
+Omni::Omni(mechanismConfig_t config, thresholdParam_t thresholdParam, int wheelNum) :
+    BaseMovingMechanism(config, thresholdParam, wheelNum)//, _option(option)
 {
     setDefaultRateMatrix();
 }
@@ -17,22 +17,49 @@ void Omni::setRateMatrix(double rateMatrix[][3])
     }
 }
 
-void Omni::calculate(double velocityVector[3], double outputRate[], double angle)
+
+void Omni::calculate(double vx, double vy, double angularVelocity, double angle)
 {
-    setDefaultRateMatrix(angle);
-    calculateBase(velocityVector, outputRate);
+    double velocityVector[3] = {vx, vy, angularVelocity};
+    calculate(velocityVector, angle);
 }
 
-void Omni::setDefaultRateMatrix(double angle)
+void Omni::calculate(double velocityVector[3], double angle)
+{
+    // xy方向の入力をangle分回転
+    velocityVector[0] = velocityVector[0] * cos(-angle) - velocityVector[1] * sin(-angle);
+    velocityVector[1] = velocityVector[0] * sin(-angle) + velocityVector[1] * cos(-angle);
+    
+    calculateBase(velocityVector);
+}
+
+void Omni::setDefaultRateMatrix()
 {
     // for Omni
     
     double fwa = _config.theta;
-    double buf_rateMatrix[3][3]= 
+    
+    if(_wheelNum == 3)
     {
-        {-sin(fwa + (oneThirdrPi * 0 + angle)), cos(fwa + (oneThirdrPi * 0 + angle)), _config.radius},
-        {-sin(fwa + (oneThirdrPi * 2 + angle)), cos(fwa + (oneThirdrPi * 2 + angle)), _config.radius},
-        {-sin(fwa + (oneThirdrPi * 4 + angle)), cos(fwa + (oneThirdrPi * 4 + angle)), _config.radius}
-    };
-    setRateMatrix(buf_rateMatrix);
+        double buf_rateMatrix[3][3] = 
+        {
+            {-sin(fwa + (oneThirdrPi * 0)), cos(fwa + (oneThirdrPi * 0)), _config.radius},
+            {-sin(fwa + (oneThirdrPi * 2)), cos(fwa + (oneThirdrPi * 2)), _config.radius},
+            {-sin(fwa + (oneThirdrPi * 4)), cos(fwa + (oneThirdrPi * 4)), _config.radius}
+        };
+        
+        setRateMatrix(buf_rateMatrix);
+    }
+    if(_wheelNum == 4)
+    {
+        double buf_rateMatrix[4][3] = 
+        {
+            {-sin(fwa + (halfPi * 0)), cos(fwa + (halfPi * 0)), _config.radius},
+            {-sin(fwa + (halfPi * 1)), cos(fwa + (halfPi * 1)), _config.radius},
+            {-sin(fwa + (halfPi * 2)), cos(fwa + (halfPi * 2)), _config.radius},
+            {-sin(fwa + (halfPi * 3)), cos(fwa + (halfPi * 3)), _config.radius}
+        };
+        setRateMatrix(buf_rateMatrix);
+    }
+
 }

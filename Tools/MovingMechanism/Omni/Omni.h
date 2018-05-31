@@ -8,12 +8,15 @@
 class Omni : public BaseMovingMechanism
 {
 public:
-    Omni(mechanismConfig_t config, thresholdParam_t thresholdParam, int option = OMNI_3WHEEL);
-    void setRateMatrix(double rateArray[4][3]);
-    void calculate(double velocityVector[3], double outputRate[], double angle);
+    Omni(mechanismConfig_t config, thresholdParam_t thresholdParam, int wheelNum = OMNI_3WHEEL);
+    void init(mechanismConfig_t config, thresholdParam_t thresholdParam, int wheelNum = OMNI_3WHEEL);
+    
+    void setRateMatrix(double rateArray[][3]);
+    void calculate(double vx, double vy, double angularVelocity, double angle = 0.0);
+    void calculate(double velocityVector[3], double angle = 0.0);
     
 protected:
-    void setDefaultRateMatrix(double angle = 0.0f);
+    void setDefaultRateMatrix();
     
 protected:
     //int _option;
