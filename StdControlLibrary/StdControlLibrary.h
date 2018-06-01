@@ -1,5 +1,5 @@
-#ifndef Tools_h
-#define Tools_h
+#ifndef StdControlLibrary_h
+#define StdControlLibrary_h
 
 /*
 ToDo:
@@ -15,4 +15,4 @@ Add QEI lib (only minibed(LPC1549))
 #include "module.h"
 #include "MovingMechanism.h"
 
-#endif //Tools_h
+#endif //StdControlLibrary_h
