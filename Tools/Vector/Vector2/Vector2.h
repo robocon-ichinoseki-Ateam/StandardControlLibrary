@@ -7,16 +7,16 @@ class Vector2
 {
 public:
     Vector2();
-    Vector2(float vx, float vy);
+    Vector2(double vx, double vy);
     
-    void set(float vx, float vy);
+    void set(double vx, double vy);
     double getMagnitude();
     static Vector2 zero()
     {
         return Vector2(0.0f, 0.0f);
     }
     
-    Vector2& operator = (Vector2& v)
+    Vector2& operator = (const Vector2& v)
     {
         x = v.x;
         y = v.y;
@@ -24,7 +24,37 @@ public:
         return *this;
     }
     
-    Vector2& operator + (Vector2& v)
+    bool operator == (const Vector2& v) const
+    {
+        return (x == v.x) && (y == v.y);
+    }
+    
+    bool operator != (const Vector2& v) const
+    {
+        return !((x == v.x) && (y == v.y));
+    }
+    
+    Vector2 operator + (const Vector2& v)
+    {
+        return Vector2(x + v.x, y + v.y);
+    }
+    
+    Vector2 operator - (const Vector2& v)
+    {
+        return Vector2(x - v.x, y - v.y);
+    }
+    
+    Vector2 operator * (double value)
+    {
+        return Vector2(x * value, y * value);
+    }
+    
+    Vector2 operator / (double value)
+    {
+        return Vector2(x / value, y / value);
+    }
+    
+    Vector2& operator += (const Vector2& v)
     {
         x += v.x;
         y += v.y;
@@ -32,7 +62,7 @@ public:
         return *this;
     }
     
-    Vector2& operator - (Vector2& v)
+    Vector2& operator -= (const Vector2& v)
     {
         x -= v.x;
         y -= v.y;
@@ -40,7 +70,7 @@ public:
         return *this;
     }
     
-    Vector2& operator * (float value)
+    Vector2& operator *= (double value)
     {
         x *= value;
         y *= value;
@@ -48,7 +78,7 @@ public:
         return *this;
     }
     
-    Vector2& operator / (float value)
+    Vector2& operator /= (double value)
     {
         x /= value;
         y /= value;
@@ -57,7 +87,7 @@ public:
     }
     
 public:
-    float x, y;
+    double x, y;
 };
 
 #endif //Vector_2_h

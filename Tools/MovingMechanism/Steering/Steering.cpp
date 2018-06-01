@@ -48,10 +48,10 @@ void Steering::calculateEach(double velocityVector[3])
     for(int wheel = 0; wheel < 4; wheel++)
     {
         if(maxValue > _thresholdParam.maxOutput)
-            v[wheel] = v[wheel] * _thresholdParam.maxOutput / maxValue;
+            v[wheel] *= _thresholdParam.maxOutput / maxValue;
             
         if(v[wheel].getMagnitude() < _thresholdParam.minOutput)
-            v[wheel].set(0,0);
+            v[wheel] = Vector2::zero();
     }
 }
 

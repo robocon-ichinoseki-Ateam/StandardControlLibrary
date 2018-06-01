@@ -7,16 +7,16 @@ class Vector3
 {
 public:
     Vector3();
-    Vector3(float vx, float vy, float vz);
+    Vector3(double vx, double vy, double vz);
     
-    void set(float vx, float vy, float vz);
+    void set(double vx, double vy, double vz);
     double getMagnitude();
     static Vector3 zero()
     {
         return Vector3(0.0f, 0.0f, 0.0f);
     }
     
-    Vector3& operator = (Vector3& v)
+    Vector3& operator = (const Vector3& v)
     {
         x = v.x;
         y = v.y;
@@ -25,7 +25,37 @@ public:
         return *this;
     }
     
-    Vector3& operator + (Vector3& v)
+    bool operator == (const Vector3& v) const
+    {
+        return (x == v.x) && (y == v.y) && (z == v.z);
+    }
+    
+    bool operator != (const Vector3& v) const
+    {
+        return !((x == v.x) && (y == v.y) && (z == v.z));
+    }
+    
+    Vector3 operator + (const Vector3& v)
+    {
+        return Vector3(x + v.x, y + v.y, z + v.z);
+    }
+    
+    Vector3 operator - (const Vector3& v)
+    {
+        return Vector3(x - v.x, y - v.y, z - v.z);
+    }
+    
+    Vector3 operator * (double value)
+    {
+        return Vector3(x * value, y * value, z * value);
+    }
+    
+    Vector3 operator / (double value)
+    {
+        return Vector3(x / value, y / value, z / value);
+    }
+    
+    Vector3& operator += (const Vector3& v)
     {
         x += v.x;
         y += v.y;
@@ -34,7 +64,7 @@ public:
         return *this;
     }
     
-    Vector3& operator - (Vector3& v)
+    Vector3& operator -= (const Vector3& v)
     {
         x -= v.x;
         y -= v.y;
@@ -43,7 +73,7 @@ public:
         return *this;
     }
     
-    Vector3& operator * (float value)
+    Vector3& operator *= (double value)
     {
         x *= value;
         y *= value;
@@ -52,7 +82,7 @@ public:
         return *this;
     }
     
-    Vector3& operator / (float value)
+    Vector3& operator /= (double value)
     {
         x /= value;
         y /= value;
@@ -61,7 +91,7 @@ public:
         return *this;
     }
 public:
-    float x, y, z;
+    double x, y, z;
 };
 
 #endif //Vector_3_h
