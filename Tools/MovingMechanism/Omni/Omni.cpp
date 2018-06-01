@@ -1,42 +1,56 @@
 #include "MovingMechanism.h"
 
-Omni::Omni(mechanismConfig_t config, thresholdParam_t thresholdParam, int wheelNum) :
-    BaseMovingMechanism(config, thresholdParam, wheelNum)//, _option(option)
+Omni::Omni(mechanismConfig_t config, thresholdParam_t thresholdParam) :
+    BaseMovingMechanism(config, thresholdParam, config.option)
 {
+    v = new double[_wheelNum];
+    _rateMatrix = new double*[_wheelNum];
+    for (int i = 0; i < _wheelNum; i++) {
+        _rateMatrix[i] = new double[3];
+    }
     setDefaultRateMatrix();
 }
-    
+
 void Omni::setRateMatrix(double rateMatrix[][3])
 {
-    for(int motor = 0; motor < _wheelNum; motor++)
+    for(int wheel = 0; wheel < _wheelNum; wheel++)
     {
         for(int element = 0; element < 3; element++)
         {
-            _rateMatrix[motor][element] = rateMatrix[motor][element];
+            _rateMatrix[wheel][element] = rateMatrix[wheel][element];
         }
     }
 }
 
-
-void Omni::calculate(double vx, double vy, double angularVelocity, double angle)
+void Omni::calculateEach(double velocityVector[3])
 {
-    double velocityVector[3] = {vx, vy, angularVelocity};
-    calculate(velocityVector, angle);
-}
-
-void Omni::calculate(double velocityVector[3], double angle)
-{
-    // xy方向の入力をangle分回転
-    velocityVector[0] = velocityVector[0] * cos(-angle) - velocityVector[1] * sin(-angle);
-    velocityVector[1] = velocityVector[0] * sin(-angle) + velocityVector[1] * cos(-angle);
+    double maxValue = 0;
     
-    calculateBase(velocityVector);
+    for(int wheel = 0; wheel < _wheelNum; wheel++)
+    {
+        v[wheel] = 0;
+        for (int element = 0; element < 3; element++) {
+            v[wheel] += _rateMatrix[wheel][element] * velocityVector[element];
+        }
+        
+        // 最大値を格納
+        if(abs(v[wheel]) > maxValue)
+            maxValue = abs(v[wheel]);
+    }
+    
+    // 出力ガード処理
+    for(int wheel = 0; wheel < _wheelNum; wheel++)
+    {
+        if(maxValue > _thresholdParam.maxOutput)
+            v[wheel] = map<double>(v[wheel], -maxValue, maxValue, -_thresholdParam.maxOutput, _thresholdParam.maxOutput);
+            
+        if(abs(v[wheel]) < _thresholdParam.minOutput)
+            v[wheel] = 0;
+    }
 }
 
 void Omni::setDefaultRateMatrix()
 {
-    // for Omni
-    
     double fwa = _config.theta;
     
     if(_wheelNum == 3)
@@ -62,4 +76,9 @@ void Omni::setDefaultRateMatrix()
         setRateMatrix(buf_rateMatrix);
     }
 
+}
+
+double Omni::getWheelVelocity(short num)
+{
+    return *(v + num);
 }

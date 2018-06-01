@@ -1,9 +1,9 @@
 #include "Steering.h"
 
-Steering::Steering(mechanismConfig_t config, thresholdParam_t thresholdParam) :
-    _config(config), _thresholdParam(thresholdParam)
+Steering::Steering(mechanismConfig_t config, thresholdParam_t thresholdParam):
+    BaseMovingMechanism(config, thresholdParam, 4)
 {
-        double x = _config.width / 2;
+    double x = _config.width / 2;
     double y = _config.length / 2;
 
 #warning [mm]? [m]?
@@ -17,23 +17,9 @@ Steering::Steering(mechanismConfig_t config, thresholdParam_t thresholdParam) :
     _config.theta = atan2(y, x);
 }
 
-void Steering::calculate(double velocityVector[3], double angle)
+void Steering::calculateEach(double velocityVector[3])
 {
     double maxValue = 0;
-    
-    // 入力ガード処理
-    for(int element = 0; element < 3; element++)
-    {
-        if(velocityVector[element] > _thresholdParam.maxInput)
-            velocityVector[element] = _thresholdParam.maxInput;
-            
-        if(velocityVector[element] < _thresholdParam.minInput)
-            velocityVector[element] = 0;
-    }
-    
-    // xy方向の入力をangle分回転
-    velocityVector[0] = velocityVector[0] * cos(-angle) - velocityVector[1] * sin(-angle);
-    velocityVector[1] = velocityVector[0] * sin(-angle) + velocityVector[1] * cos(-angle);
     
     // 各ホイールの速度の計算
 #warning use _config.width & _config.length. rotationCorrection
@@ -69,7 +55,7 @@ void Steering::calculate(double velocityVector[3], double angle)
     }
 }
 
-Vector2 Steering::getWheelVelocity(short num)
+Vector2 Steering::getWheelVector(short num)
 {
     return v[num];
 }

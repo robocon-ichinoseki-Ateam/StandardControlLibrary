@@ -3,62 +3,33 @@
 BaseMovingMechanism::BaseMovingMechanism(mechanismConfig_t config, thresholdParam_t thresholdParam, int wheelNum):
     _config(config), _thresholdParam(thresholdParam), _wheelNum(wheelNum)
 {
-    
+
 }
 
-/*
-BaseMovingMechanism::initBase(mechanismConfig_t config, thresholdParam_t thresholdParam)
-{
-    _config = config;
-    _thresholdParam = thresholdParam;
-}
-*/
-
-void BaseMovingMechanism::calculateBase(double vx, double vy, double angularVelocity)
+void BaseMovingMechanism::calculate(double vx, double vy, double angularVelocity, double angle)
 {
     double velocityVector[3] = {vx, vy, angularVelocity};
-    calculateBase(velocityVector);
+    calculate(velocityVector, angle);
 }
 
-void BaseMovingMechanism::calculateBase(double velocityVector[3])
+void BaseMovingMechanism::calculate(double velocityVector[3], double angle)
 {
-    double maxValue = 0;
+    _angle = angle;
     
     // 入力ガード処理
     for(int element = 0; element < 3; element++)
     {
-        if(velocityVector[element] > _thresholdParam.maxInput)
-            velocityVector[element] = _thresholdParam.maxInput;
+        if(abs(velocityVector[element]) > _thresholdParam.maxInput)
+            velocityVector[element] = _thresholdParam.maxInput * signOf(velocityVector[element]);
             
-        if(velocityVector[element] < _thresholdParam.minInput)
+        if(abs(velocityVector[element]) < _thresholdParam.minInput)
             velocityVector[element] = 0;
     }
     
-    // 線形変換
-    for(int wheel = 0; wheel < _wheelNum; wheel++)
-    {
-        for (int element = 0; element < 3; element++) {
-            v[wheel] += _rateMatrix[wheel][element] * velocityVector[wheel];
-        }
-        
-        // 最大値を格納
-        if(abs(v[wheel]) > maxValue)
-            maxValue = v[wheel];
-    }
+    // xy方向の入力をangle分回転
+    velocityVector[0] = velocityVector[0] * cos(-angle) - velocityVector[1] * sin(-angle);
+    velocityVector[1] = velocityVector[0] * sin(-angle) + velocityVector[1] * cos(-angle);
     
-    // 出力ガード処理
-    for(int wheel = 0; wheel < _wheelNum; wheel++)
-    {
-        if(maxValue > _thresholdParam.maxOutput)
-            v[wheel] = map<double>(v[wheel], -maxValue, maxValue, -_thresholdParam.maxOutput, _thresholdParam.maxOutput);
-            
-        if(v[wheel] < _thresholdParam.minOutput)
-            v[wheel] = 0;
-    }
+    // 出力を計算する
+    calculateEach(velocityVector);
 }
-
-double BaseMovingMechanism::getWheelVelocity(short num)
-{
-    return v[num];
-}
-

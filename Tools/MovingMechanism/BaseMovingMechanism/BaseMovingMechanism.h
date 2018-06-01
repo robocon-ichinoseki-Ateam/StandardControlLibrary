@@ -5,27 +5,23 @@
 #include "ArduinoMacro.h"
 #include "MovingMechanismConstants.h"
 #include "GenericFunctions.h"
+#include "Vector.h"
 
 class BaseMovingMechanism
 {
 public:
     BaseMovingMechanism(mechanismConfig_t config, thresholdParam_t thresholdParam, int wheelNum);
-    double getWheelVelocity(short num);
+    void calculate(double vx, double vy, double angularVelocity, double angle = 0.0);
+    void calculate(double velocityVector[3], double angle = 0.0);
     
 protected:
-    //void initBase(mechanismConfig_t config, thresholdParam_t thresholdParam, int wheelNum);
-    void setRateMatrix(double matrix[][3]);
-    void calculateBase(double vx, double vy, double angularVelocity);
-    void calculateBase(double velocityVector[3]);
+    virtual void calculateEach(double velocityVector[3]) = 0;
     
 protected:
     mechanismConfig_t _config;
     thresholdParam_t _thresholdParam;
     int _wheelNum;
-    
-    double _rateMatrix[4][3];
-    double v[4];
-    
+    double _angle;
 };
 
 #endif //BaseMovingMechanism_h

@@ -1,7 +1,7 @@
 #include "MovingMechanism.h"
 
-Mecanum::Mecanum(mechanismConfig_t config, thresholdParam_t thresholdParam, int option) :
-    BaseMovingMechanism(config, thresholdParam, 4), _option(option)
+Mecanum::Mecanum(mechanismConfig_t config, thresholdParam_t thresholdParam) :
+    BaseMovingMechanism(config, thresholdParam, 4)
 {
     setDefaultRateMatrix();
 }
@@ -17,25 +17,36 @@ void Mecanum::setRateMatrix(double rateMatrix[4][3])
     }
 }
 
-void Mecanum::calculate(double vx, double vy, double angularVelocity, double angle)
+void Mecanum::calculateEach(double velocityVector[3])
 {
-    double velocityVector[3] = {vx, vy, angularVelocity};
-    calculate(velocityVector, angle);
-}
-
-void Mecanum::calculate(double velocityVector[3], double angle)
-{
-    // xy方向の入力をangle分回転
-    velocityVector[0] = velocityVector[0] * cos(-angle) - velocityVector[1] * sin(-angle);
-    velocityVector[1] = velocityVector[0] * sin(-angle) + velocityVector[1] * cos(-angle);
+    double maxValue = 0;
     
-    calculateBase(velocityVector);
+    for(int wheel = 0; wheel < _wheelNum; wheel++)
+    {
+        v[wheel] = 0;
+        for (int element = 0; element < 3; element++) {
+            v[wheel] += _rateMatrix[wheel][element] * velocityVector[element];
+        }
+        
+        // 最大値を格納
+        if(abs(v[wheel]) > maxValue)
+            maxValue = abs(v[wheel]);
+    }
+    
+    // 出力ガード処理
+    for(int wheel = 0; wheel < _wheelNum; wheel++)
+    {
+        if(maxValue > _thresholdParam.maxOutput)
+            v[wheel] = map<double>(v[wheel], -maxValue, maxValue, -_thresholdParam.maxOutput, _thresholdParam.maxOutput);
+            
+        if(abs(v[wheel]) < _thresholdParam.minOutput)
+            v[wheel] = 0;
+    }
 }
 
 #warning mechanismConfig_t .thetaに対応させる
 void Mecanum::setDefaultRateMatrix()
 {
-    // for mecanum
     int x_option = 1;
     
     double x = _config.width / 2;
@@ -48,7 +59,7 @@ void Mecanum::setDefaultRateMatrix()
     // 理想的なメカナムホイールの配置（45deg）からのズレの度合い
     double rotationCorrection = cos(atan2(y, x) - PI / 4); 
     
-    if(_option == MECANUM_SQUARE)
+    if(_config.option == MECANUM_SQUARE)
         x_option = -1;
     
     double buf_rateMatrix[4][3] = 
@@ -60,4 +71,9 @@ void Mecanum::setDefaultRateMatrix()
     };
     
     setRateMatrix(buf_rateMatrix);
+}
+
+double Mecanum::getWheelVelocity(short num)
+{
+    return v[num];
 }
