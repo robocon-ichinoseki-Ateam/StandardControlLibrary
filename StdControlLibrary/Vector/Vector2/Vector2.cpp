@@ -5,12 +5,12 @@ Vector2::Vector2()
     set(0.0f, 0.0f);
 }
 
-Vector2::Vector2(float vx, float vy)
+Vector2::Vector2(double vx, double vy)
 {
     set(vx, vy);
 }
     
-void Vector2::set(float vx, float vy)
+void Vector2::set(double vx, double vy)
 {
     x = vx;
     y = vy;
