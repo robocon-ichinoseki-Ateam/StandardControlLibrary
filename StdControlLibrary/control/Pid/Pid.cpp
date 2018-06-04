@@ -7,7 +7,6 @@ PID::PID(double p, double i, double d)
     Kd = d;
 }
     
-double PID::calculate(double targetVal, double nowVal)
 {
     static Timer deltaTimer;
     deltaTimer.start();
