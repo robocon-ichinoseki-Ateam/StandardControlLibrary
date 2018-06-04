@@ -1,11 +1,11 @@
-#ifndef _PID_HPP_
-#define _PID_HPP_
+#ifndef PID_h
+#define PID_h
 #include <mbed.h>
 
-class Pid
+class PID
 {
     public:
-    Pid(double, double, double);
+    PID(double, double, double);
     double calculate(double, double);
     double Kp, Ki, Kd;
 };

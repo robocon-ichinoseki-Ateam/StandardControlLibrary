@@ -1,13 +1,12 @@
-#include "Pid.hpp"
-
-Pid::Pid(double p, double i, double d)
+#include "PID.h"
+PID::PID(double p, double i, double d)
 {
     Kp = p;
     Ki = i;
     Kd = d;
 }
     
-double Pid::calculate(double targetVal, double nowVal)
+double PID::calculate(double targetVal, double nowVal)
 {
     static Timer deltaTimer;
     deltaTimer.start();

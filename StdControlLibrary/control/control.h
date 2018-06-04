@@ -1,6 +1,6 @@
 #ifndef control_h
 #define control_h
 
-#include "Pid.hpp"
+#include "PID.h"
 
 #endif //control_h
