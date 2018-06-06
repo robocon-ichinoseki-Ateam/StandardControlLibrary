@@ -1,6 +1,8 @@
 #ifndef GenericFunctions_h
 #define GenericFunctions_h
 
+#define signOf(x) (x >= 0 ? 1 : -1)
+
 template<typename T>
 T map(T x, T in_min, T in_max, T out_min, T out_max)
 {
