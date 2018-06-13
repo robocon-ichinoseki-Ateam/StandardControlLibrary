@@ -7,12 +7,12 @@
 // http://suzakugiken.jp/goods/30335/catalog-IG36P.pdf
 // http://suzakugiken.jp/goods/30045/catalog-IG42C.pdf
 
-static gearboxData_t noGearbox
+static gearboxData_t noGearbox =
 {
     .reductionRatio = (double)1,
 };
 
-static gearboxData_t IG32_27
+static gearboxData_t IG32_27 =
 {
     .reductionRatio = (double)103/121,
     .ratedMaxTorgle = 6.0,
@@ -20,7 +20,7 @@ static gearboxData_t IG32_27
     .efficiency = 0.7,
 };
 
-static gearboxData_t IG32_71
+static gearboxData_t IG32_71 =
 {
     .reductionRatio = (double)524/3179,
     .ratedMaxTorgle = 8.0,
@@ -28,7 +28,7 @@ static gearboxData_t IG32_71
     .efficiency = 0.6,
 };
 
-static gearboxData_t IG32_100
+static gearboxData_t IG32_100 =
 {
     .reductionRatio = (double)1044/2057,
     .ratedMaxTorgle = 10.0,

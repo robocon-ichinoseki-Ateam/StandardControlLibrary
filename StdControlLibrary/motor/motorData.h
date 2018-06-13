@@ -36,7 +36,7 @@ extern "C" {
 #endif
 
 // return max speed [rpm]
-double getMaxSpeed(motorData_t motor, gearboxData_t gearbox);
+double getMaxSpeed(motorData_t motor, gearboxData_t gearbox, double voltage);
 
 // return max torgle []
 double getMaxTorgle(motorData_t motor, gearboxData_t gearbox);

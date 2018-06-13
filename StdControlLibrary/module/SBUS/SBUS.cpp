@@ -76,12 +76,7 @@ int SBUS::getStickVal(int axis)
 
 int SBUS::getSwitchVal(int parm)
 {
-    if (parm == 0)
-        return SBUS::map(getData(4), 144, 1904, 0, 2);
-    else if (parm <= 4)
-        return SBUS::map(getData(parm + 5), 144, 1904, 0, 2);
-    else
-        return 0;
+    return SBUS::map(getData(parm + 4), 144, 1904, 0, 2);
 }
 
 long SBUS::map(long x, long in_min, long in_max, long out_min, long out_max)
