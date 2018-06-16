@@ -1,8 +1,9 @@
 #ifndef QEI_h
 #define QEI_h
 
-#include "qei_api.h"
+#ifdef TARGET_LPC1549
 
+#include "qei_api.h"
 #include "mbed.h"
 
 class QEI
@@ -120,5 +121,7 @@ protected:
     //int PPR;
     //int PCLK;
 };
+
+#endif //TARGET_LPC1549
 
 #endif //QEI_h

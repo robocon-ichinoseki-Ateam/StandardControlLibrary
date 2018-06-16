@@ -1,6 +1,8 @@
 #ifndef _QEI_API_H_
 #define _QEI_API_H_
 
+#ifdef TARGET_LPC1549
+
 #include "device.h"
 #include "stdbool.h"
 /*
@@ -76,5 +78,7 @@ bool qei_get_invert_index_status(void);
 #ifdef __cplusplus
 }
 #endif
+
+#endif //TARGET_LPC1549
 
 #endif //_QEI_API_H_
