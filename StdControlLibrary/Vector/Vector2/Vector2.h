@@ -11,6 +11,11 @@ public:
     
     void set(double vx, double vy);
     double getMagnitude();
+    void normalize();
+    Vector2 getNormalized();
+    void rotate(double angle);
+    Vector2 getRotated(double angle);
+    
     static Vector2 zero()
     {
         return Vector2(0.0f, 0.0f);

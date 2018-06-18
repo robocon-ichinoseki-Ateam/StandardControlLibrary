@@ -2,6 +2,7 @@
 #define Vector_3_h
 
 #include "mbed.h"
+#include "Quaternion.h"
 
 class Vector3
 {
@@ -11,6 +12,11 @@ public:
     
     void set(double vx, double vy, double vz);
     double getMagnitude();
+    void normalize();
+    Vector3 getNormalized();
+    void rotate(Quaternion *q);
+    Vector3 getRotated(Quaternion *q);
+    
     static Vector3 zero()
     {
         return Vector3(0.0f, 0.0f, 0.0f);
