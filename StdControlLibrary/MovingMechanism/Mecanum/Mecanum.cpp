@@ -53,7 +53,6 @@ void Mecanum::setDefaultRateMatrix()
     double y = _config.length / 2;
     
     // 機体中心からホイールまでの距離
-#warning [mm]? [m]?
     double length = sqrt(x*x + y*y);
 
     // 理想的なメカナムホイールの配置（45deg）からのズレの度合い

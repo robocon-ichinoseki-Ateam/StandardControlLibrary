@@ -6,7 +6,6 @@ Steering::Steering(mechanismConfig_t config, thresholdParam_t thresholdParam):
     double x = _config.width / 2;
     double y = _config.length / 2;
 
-#warning [mm]? [m]?
     // 機体中心からホイールまでの距離を出す
     if(_config.radius == 0.0)
     {
