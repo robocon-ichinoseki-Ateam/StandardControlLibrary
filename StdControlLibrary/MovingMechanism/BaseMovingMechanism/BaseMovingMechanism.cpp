@@ -27,9 +27,10 @@ void BaseMovingMechanism::calculate(double velocityVector[3], double angle)
     }
     
     // xy方向の入力をangle分回転
-    double v[2];
+    double v[3];
     v[0] = velocityVector[0] * cos(-angle) - velocityVector[1] * sin(-angle);
     v[1] = velocityVector[0] * sin(-angle) + velocityVector[1] * cos(-angle);
+    v[2] = velocityVector[2];
     
     // 出力を計算する
     calculateEach(v);
