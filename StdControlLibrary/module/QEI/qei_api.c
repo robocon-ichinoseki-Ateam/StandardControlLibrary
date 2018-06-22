@@ -2,6 +2,8 @@
 #include <math.h>
 #include <string.h>
 
+#ifdef TARGET_LPC1549
+
 #include "qei_api.h"
 #include "cmsis.h"
 #include "pinmap.h"
@@ -158,3 +160,5 @@ bool qei_get_invert_index_status()
 {
     return (LPC_QEI->CONF & (1 << 3));
 }
+
+#endif //TARGET_LPC1549

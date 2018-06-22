@@ -1,5 +1,7 @@
 #include "QEI.h"
 
+#ifdef TARGET_LPC1549
+
 //UM p329～
 
 QEI::QEI(PinName phaseA, 
@@ -225,3 +227,5 @@ void QEI::clearInterruptStatus(uint32_t symbol)
     LPC_QEI->CLR |= symbol;
 }
 */
+
+#endif //TARGET_LPC1549
