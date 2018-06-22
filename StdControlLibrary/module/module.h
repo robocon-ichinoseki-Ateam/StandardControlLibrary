@@ -5,5 +5,6 @@
 #include "Potentiometer.h"
 #include "SBUS.h"
 #include "QEI.h"
+#include "MPU6050.h"
 
 #endif //module_h
