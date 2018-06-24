@@ -6,5 +6,6 @@
 #include "SBUS.h"
 #include "QEI.h"
 #include "MPU6050.h"
+#include "VNH5019.h"
 
 #endif //module_h
