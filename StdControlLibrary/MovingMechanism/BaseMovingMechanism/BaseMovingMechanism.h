@@ -2,9 +2,8 @@
 #define BaseMovingMechanism_h
 
 #include "mbed.h"
-#include "ArduinoMacro.h"
-#include "MovingMechanismConstants.h"
 #include "GenericFunctions.h"
+#include "MovingMechanismConstants.h"
 #include "Vector.h"
 
 class BaseMovingMechanism
