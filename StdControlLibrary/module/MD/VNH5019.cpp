@@ -28,13 +28,13 @@ void VNH5019::write(float value)
     
     if(value > 0)
     {
-        _pwm = _value / _maxValue;
+        _pwm = abs(_value / _maxValue);
         _inA = 1;
         _inB = 0;
     }
     else if(value < 0)
     {
-        _pwm = _value / _maxValue;
+        _pwm = abs(_value / _maxValue);
         _inA = 0;
         _inB = 1;
     }
