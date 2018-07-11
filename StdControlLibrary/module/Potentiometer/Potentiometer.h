@@ -2,20 +2,21 @@
 #define Potentiometer_h
 
 #include "mbed.h"
+#include "GenericFunctions.h"
 
 class Potentiometer
 {
 public:
-    Potentiometer(PinName pin, double maxValue, double startValue);
+    Potentiometer(PinName pin);
+    Potentiometer(PinName pin, double minValue, double maxValue);
+    void setRange(double minValue, double maxValue);
+    double getRawValue();
     double getValue();
-    double getAbsoluteAngle();
-    double getRelativeAngle();
     
 protected:
     AnalogIn _pin;
+    double _minValue;
     double _maxValue;
-    double _startValue;
-    
 };
 
 #endif //Potentiometer_h
