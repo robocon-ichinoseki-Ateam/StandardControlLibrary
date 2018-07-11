@@ -7,5 +7,6 @@
 #include "QEI.h"
 #include "MPU6050.h"
 #include "VNH5019.h"
+#include "USS.h"
 
 #endif //module_h

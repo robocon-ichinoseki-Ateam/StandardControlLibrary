@@ -34,7 +34,7 @@
 #define bitWrite(value, bit, bitvalue) (bitvalue ? bitSet(value, bit) : bitClear(value, bit))
 #define bitShift(bit) (1UL << (bit))
 
-#define signOf(x) (x >= 0 ? 1 : -1)
+#define signOf(x) (x > 0 ? 1 : x < 0 ? -1 : 0)
 #define guard(x, min, max) (x > max ? max : x < min ? min : x)
 
 template<typename T>

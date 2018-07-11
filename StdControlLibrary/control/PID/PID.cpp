@@ -8,8 +8,6 @@ PID::PID(double p, double i, double d)
     
 double PID::calculate(double targetVal, double nowVal, long double dt)
 {   
-    static double integral = 0;
-    static double diff[2] = {0, 0}; // 0: 現在, 1: 過去
     double p, i, d;
     
     diff[0] = targetVal - nowVal;
