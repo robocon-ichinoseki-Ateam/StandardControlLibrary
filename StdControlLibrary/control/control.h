@@ -1,7 +1,7 @@
-#ifndef control_h
-#define control_h
+#ifndef Control_h
+#define Control_h
 
 #include "PID.h"
 #include "KalmanFilter.h"
 
-#endif //control_h
+#endif //Control_h

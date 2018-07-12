@@ -1,8 +1,8 @@
-#ifndef motor_h
-#define motor_h
+#ifndef Motor_h
+#define Motor_h
 
-#include "motorData.h"
-#include "motorCollection.h"
-#include "gearboxCollection.h"
+#include "MotorData.h"
+#include "MotorCollection.h"
+#include "GearboxCollection.h"
 
-#endif //motor_h
+#endif //Motor_h

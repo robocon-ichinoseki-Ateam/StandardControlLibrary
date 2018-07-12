@@ -1,7 +1,7 @@
-#ifndef gearboxCollection_h
-#define gearboxCollection_h
+#ifndef GearboxCollection_h
+#define GearboxCollection_h
 
-#include "motorData.h"
+#include "MotorData.h"
 
 // http://suzakugiken.jp/goods/30144/catalog-IG32.pdf
 // http://suzakugiken.jp/goods/30335/catalog-IG36P.pdf
@@ -36,4 +36,4 @@ static gearboxData_t IG32_100 =
     .efficiency = 0.6,
 };
 
-#endif //gearboxCollection_h
+#endif //GearboxCollection_h
