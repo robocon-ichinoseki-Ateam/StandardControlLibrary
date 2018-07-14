@@ -1,7 +1,7 @@
-#ifndef motorCollection_h
-#define motorCollection_h
+#ifndef MotorCollection_h
+#define MotorCollection_h
 
-#include "motorData.h"
+#include "MotorData.h"
 
 static motorData_t RS_380_S = 
 {
@@ -65,4 +65,4 @@ static motorData_t RS_775_ =
 }
 */
 
-#endif //motorCollection_h
+#endif //MotorCollection_h

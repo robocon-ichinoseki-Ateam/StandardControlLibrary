@@ -1,5 +1,5 @@
-#ifndef motorData_h
-#define motorData_h
+#ifndef MotorData_h
+#define MotorData_h
 
 #define GRAVITY 9.807
 #define Nm2gfm (1/GRAVITY)
@@ -45,4 +45,4 @@ double getMaxTorgle(motorData_t motor, gearboxData_t gearbox);
 }
 #endif
 
-#endif //motorData_h
+#endif //MotorData_h

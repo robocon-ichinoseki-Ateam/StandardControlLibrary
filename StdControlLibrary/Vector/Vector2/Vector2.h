@@ -12,7 +12,9 @@ public:
     
     // function
     void set(double vx, double vy);
+    void setPolarCoordinate(double radius, double angle);
     double getMagnitude();
+    double getAngle();
     void normalize();
     Vector2 getNormalized();
     void rotate(double angle);

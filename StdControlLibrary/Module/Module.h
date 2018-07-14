@@ -1,5 +1,5 @@
-#ifndef module_h
-#define module_h
+#ifndef Module_h
+#define Module_h
 
 #include "TapeLed.h"
 #include "Potentiometer.h"
@@ -9,4 +9,4 @@
 #include "VNH5019.h"
 #include "USS.h"
 
-#endif //module_h
+#endif //Module_h

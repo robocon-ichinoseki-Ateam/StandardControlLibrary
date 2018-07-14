@@ -1,4 +1,4 @@
-#include "motorData.h"
+#include "MotorData.h"
 
 double getMaxSpeed(motorData_t motor, gearboxData_t gearbox, double voltage)
 {
