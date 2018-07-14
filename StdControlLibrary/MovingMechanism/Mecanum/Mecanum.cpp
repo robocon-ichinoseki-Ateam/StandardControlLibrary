@@ -44,7 +44,7 @@ void Mecanum::calculateEach(double velocityVector[3])
     }
 }
 
-#warning mechanismConfig_t .thetaに対応させる
+//Todo: mechanismConfig_t .thetaに対応させる
 void Mecanum::setDefaultRateMatrix()
 {
     int x_option = 1;

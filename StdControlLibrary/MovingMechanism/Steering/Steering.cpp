@@ -21,7 +21,7 @@ void Steering::calculateEach(double velocityVector[3])
     double maxValue = 0;
     
     // 各ホイールの速度の計算
-#warning use _config.width & _config.length. rotationCorrection
+//Todo: use _config.width & _config.length. rotationCorrection
     //v[0].x = velocityVector[0] - velocityVector[2] * sin(_config.theta + angle);
     
     v[0].x = velocityVector[0] - _config.radius * velocityVector[2] * sin(_config.theta);
