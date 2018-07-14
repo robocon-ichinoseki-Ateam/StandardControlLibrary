@@ -16,9 +16,20 @@ void Vector2::set(double vx, double vy)
     y = vy;
 }
 
+void Vector2::setPolarCoordinate(double radius, double angle)
+{
+    x = radius * cos(angle);
+    y = radius * sin(angle);
+}
+
 double Vector2::getMagnitude()
 {
     return sqrt(x*x + y*y);
+}
+
+double Vector2::getAngle()
+{
+    return atan2(y, x);
 }
 
 void Vector2::normalize()
