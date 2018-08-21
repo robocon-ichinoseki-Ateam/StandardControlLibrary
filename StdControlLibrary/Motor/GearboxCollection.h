@@ -14,7 +14,7 @@ static gearboxData_t noGearbox =
 
 static gearboxData_t IG32_27 =
 {
-    .reductionRatio = (double)103/121,
+    .reductionRatio = (double)1/27,
     .ratedMaxTorgle = 6.0,
     .instantaneousMaxTorgle = 18.0,
     .efficiency = 0.7,
@@ -22,7 +22,7 @@ static gearboxData_t IG32_27 =
 
 static gearboxData_t IG32_71 =
 {
-    .reductionRatio = (double)524/3179,
+    .reductionRatio = (double)1/71,
     .ratedMaxTorgle = 8.0,
     .instantaneousMaxTorgle = 24.0,
     .efficiency = 0.6,
@@ -30,7 +30,7 @@ static gearboxData_t IG32_71 =
 
 static gearboxData_t IG32_100 =
 {
-    .reductionRatio = (double)1044/2057,
+    .reductionRatio = (double)1/100,
     .ratedMaxTorgle = 10.0,
     .instantaneousMaxTorgle = 30.0,
     .efficiency = 0.6,
