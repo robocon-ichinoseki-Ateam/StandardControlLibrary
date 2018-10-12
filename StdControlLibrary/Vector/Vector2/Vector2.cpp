@@ -81,7 +81,7 @@ Vector2 Vector2::leap(Vector2 a, Vector2 b, double t)
 {
     t = guard(t, 0.0, 1.0);
     Vector2 v = a;
-    v.x = ( b.x - a.x ) * t;
-    v.y = ( b.y - a.y ) * t;
+    v.x += ( b.x - a.x ) * t;
+    v.y += ( b.y - a.y ) * t;
     return v;
 }
